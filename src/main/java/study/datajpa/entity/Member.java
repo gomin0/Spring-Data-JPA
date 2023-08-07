@@ -7,6 +7,10 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
+@NamedQuery(
+        name="Member.findByUsername",
+        query="select m from Member m where m.username = :username")
+@NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
 public class Member {
 
     @Id
@@ -21,11 +25,12 @@ public class Member {
     private Team team;
 
     public Member(String username) {
-        this(username, 0);
+        this.username = username;
     }
 
     public Member(String username, int age) {
-        this(username, age, null);
+        this.username = username;
+        this.age = age;
     }
 
     public Member(String username, int age, Team team) {
